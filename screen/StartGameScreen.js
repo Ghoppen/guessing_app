@@ -13,11 +13,31 @@ import colors from "../constants/colors";
 import Input from "../components/Inputs/Input";
 
 const StartGameScreen = (props) => {
-  const [enteredNumber, setEnteredNumber] = useState("");
+  const [enteredInput, setEnteredInput] = useState("");
+  const [userConfirmation, setUserConfirmation] = useState(false);
+  const [selectedNumber, setSelectedNumber] = useState();
 
-  const NumberInputHandler = (number) => {
-    setEnteredNumber(number.replace(/[^0-9]/g, ""));
+  const numberInputHandler = (number) => {
+    setEnteredInput(number.replace(/[^0-9]/g, ""));
   };
+
+  const resetHandler = () => {
+    setEnteredInput("");
+    setUserConfirmation(false);
+  };
+  const confirmHandler = () => {
+    const chosenNumber = parseInt(enteredInput);
+    if (chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99) {
+      return;
+    }
+    setUserConfirmation(true);
+    setSelectedNumber(chosenNumber);
+    setEnteredInput("");
+  };
+  let confirmedOuput;
+  if (userConfirmation) {
+    confirmedOuput = <Text>Chosen Number: {selectedNumber}</Text>;
+  }
 
   return (
     <TouchableWithoutFeedback
@@ -35,26 +55,31 @@ const StartGameScreen = (props) => {
             autoCorrect={false}
             keyboardType="number-pad"
             maxLength={2}
-            onChangeText={NumberInputHandler}
-            value={enteredNumber}
+            onChangeText={numberInputHandler}
+            value={enteredInput}
           />
           <View style={styles.buttonContainer}>
             <CustomButton>
               <Button
                 title="Reset"
                 color={colors.secondary}
-                onPress={() => {}}
+                onPress={() => {
+                  resetHandler();
+                }}
               />
             </CustomButton>
             <CustomButton>
               <Button
                 title="Confirm"
                 color={colors.primary}
-                onPress={() => {}}
+                onPress={() => {
+                  confirmHandler();
+                }}
               />
             </CustomButton>
           </View>
         </Card>
+        {confirmedOuput}
       </View>
     </TouchableWithoutFeedback>
   );
