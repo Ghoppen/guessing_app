@@ -20,8 +20,16 @@ const GameScreen = (props) => {
   const [currentGuess, setCurrentGuess] = useState(
     generateRandomBetween(1, 100, props.userChoice)
   );
+  const [rounds, setRounds] = useState(0);
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
+  const { userChoice, onGameOver } = props;
+
+  useEffect(() => {
+    if (currentGuess === props.userChoice) {
+      props.onGameOver(rounds);
+    }
+  }, [currentGuess, userChoice, onGameOver]);
 
   const nextGuessHandler = (direction) => {
     if (
@@ -43,6 +51,7 @@ const GameScreen = (props) => {
       currentHigh.current,
       currentGuess
     );
+    setRounds((rounds) => rounds + 1);
     setCurrentGuess(nextNumber);
   };
 
@@ -51,16 +60,20 @@ const GameScreen = (props) => {
       <Text>Computers Guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.buttonContainer}>
-        <Button
-          title="lower"
-          color={colors.secondary}
-          onPress={nextGuessHandler.bind(this, "lower")}
-        />
-        <Button
-          title="greater"
-          color={colors.primary}
-          onPress={nextGuessHandler.bind(this, "greater")}
-        />
+        <CustomButton>
+          <Button
+            title="lower"
+            color={colors.secondary}
+            onPress={nextGuessHandler.bind(this, "lower")}
+          />
+        </CustomButton>
+        <CustomButton>
+          <Button
+            title="greater"
+            color={colors.primary}
+            onPress={nextGuessHandler.bind(this, "greater")}
+          />
+        </CustomButton>
       </Card>
     </View>
   );
