@@ -1,12 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Header from "./components/headers/Header";
 import StartGameScreen from "./screen/StartGameScreen";
 import GameScreen from "./screen/GameScreen";
 import { useState } from "react";
 import GameOverScreen from "./screen/GameOver";
-import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 
 export default function App() {
   const [selectedNumber, setSelectedNumber] = useState();
@@ -21,13 +19,25 @@ export default function App() {
     setGuessRounds(0);
   };
 
+  const startNewGameHandler = () => {
+    setGuessRounds(0);
+    setGuessRounds(0);
+    setSelectedNumber();
+  };
+
   let content = <StartGameScreen onStartGame={startGameHandler} />;
   if (selectedNumber && guessRounds <= 0) {
     content = (
       <GameScreen userChoice={selectedNumber} onGameOver={gameOverHandler} />
     );
   } else if (guessRounds > 0) {
-    content = <GameOverScreen />;
+    content = (
+      <GameOverScreen
+        roundsNumber={guessRounds}
+        userChoice={selectedNumber}
+        onRestart={startNewGameHandler}
+      />
+    );
   }
 
   return (
