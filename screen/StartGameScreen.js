@@ -13,6 +13,7 @@ import CustomButton from "../components/Buttons/CustomButton";
 import colors from "../constants/colors";
 import Input from "../components/Inputs/Input";
 import NumberContainer from "../components/texts/NumberContainer";
+import { useFonts } from "expo-font";
 
 const StartGameScreen = (props) => {
   const [enteredInput, setEnteredInput] = useState("");
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginVertical: 10,
+    fontFamily: "opensans_bold",
   },
   screen: {
     flex: 1,
