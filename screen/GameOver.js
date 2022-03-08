@@ -10,13 +10,20 @@ const GameOverScreen = (props) => {
       <TitleText>Game is over</TitleText>
       <View style={styles.imageContainer}>
         <Image
+          fadeDuration={1000}
           source={require("../assets/images/success.png")}
+          //source={{ uri: "link" }}
           style={styles.image}
           resizeMode="cover"
         />
       </View>
-      <Text>Number of Rounds: {props.roundsNumber}</Text>
-      <Text>Selected Number: {props.userChoice}</Text>
+      <Text style={styles.resultText}>
+        {" "}
+        Your phone needed{" "}
+        <Text style={styles.highlight}>{props.roundsNumber}</Text> roundsto
+        guess the number{" "}
+        <Text style={styles.highlight}>{props.userChoice}</Text>.{" "}
+      </Text>
       <CustomButton>
         <Button
           title="New Game"
@@ -48,6 +55,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     height: 300,
+  },
+  highlight: {
+    color: colors.primary,
+  },
+  resultText: {
+    textAlign: "center",
   },
 });
 
