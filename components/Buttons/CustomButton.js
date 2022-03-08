@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     maxWidth: "40%",
     elevation: 5,
     marginLeft: 10,
+    borderRadius: 25,
   },
 });
 
