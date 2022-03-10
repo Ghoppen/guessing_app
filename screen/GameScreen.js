@@ -75,8 +75,8 @@ const GameScreen = (props) => {
           <Ionicons name="md-add" size={24} color="white" />
         </MainButton>
       </Card>
-      <View style={styles.list}>
-        <ScrollView>
+      <View style={styles.listContainer}>
+        <ScrollView contentContainerStyle={styles.list}>
           {pastGuesses.map((guess, index) =>
             renderListItem(guess, pastGuesses.length - index)
           )}
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
     width: 400,
     maxWidth: "90%",
   },
-  list: { width: "80%", flex: 1 },
+  list: { alignItems: "center", justifyContent: "flex-end", flexGrow: 1 },
+  listContainer: { width: "80%", flex: 1 },
   listItem: {
     borderColor: "black",
     borderWidth: 1,
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 10,
     justifyContent: "space-around",
+    width: "60%",
   },
 });
 
