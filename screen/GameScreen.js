@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import NumberContainer from "../components/texts/NumberContainer";
 import Card from "../components/Cards/Card";
 import MainButton from "../components/Buttons/MainButton";
@@ -16,15 +23,19 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const renderListItem = (value, numberOfRounds) => (
-  <View key={value} style={styles.listItem}>
-    <Text>#{numberOfRounds}</Text>
-    <Text>{value}</Text>
+const renderListItem = (listLength, itemData) => (
+  <View style={styles.listItem}>
+    <Text>#{listLength - itemData.index}</Text>
+    <Text>{itemData.item}</Text>
   </View>
 );
 
 const GameScreen = (props) => {
-  const initialGuess = generateRandomBetween(1, 100, props.userChoice);
+  const initialGuess = generateRandomBetween(
+    1,
+    100,
+    props.userChoice
+  ).toString();
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [pastGuesses, setPastGuesses] = useState([initialGuess]);
   const currentLow = useRef(1);
@@ -59,7 +70,7 @@ const GameScreen = (props) => {
     );
     setCurrentGuess(nextNumber);
     setPastGuesses((currentPastGuesses) => {
-      return [nextNumber, ...currentPastGuesses];
+      return [nextNumber.toString(), ...currentPastGuesses];
     });
   };
 
@@ -76,11 +87,19 @@ const GameScreen = (props) => {
         </MainButton>
       </Card>
       <View style={styles.listContainer}>
-        <ScrollView contentContainerStyle={styles.list}>
+        {
+          /* <ScrollView contentContainerStyle={styles.list}>
           {pastGuesses.map((guess, index) =>
             renderListItem(guess, pastGuesses.length - index)
           )}
-        </ScrollView>
+        </ScrollView> */
+          <FlatList
+            keyExtractor={(item) => item}
+            data={pastGuesses}
+            renderItem={renderListItem.bind(this, pastGuesses.length)}
+            contentContainerStyle={styles.list}
+          />
+        }
       </View>
     </View>
   );
@@ -99,8 +118,8 @@ const styles = StyleSheet.create({
     width: 400,
     maxWidth: "90%",
   },
-  list: { alignItems: "center", justifyContent: "flex-end", flexGrow: 1 },
-  listContainer: { width: "80%", flex: 1 },
+  list: { justifyContent: "flex-end", flexGrow: 1 },
+  listContainer: { width: "60%", flex: 1 },
   listItem: {
     borderColor: "black",
     borderWidth: 1,
@@ -108,7 +127,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 10,
     justifyContent: "space-around",
-    width: "60%",
+    width: "100%",
   },
 });
 
